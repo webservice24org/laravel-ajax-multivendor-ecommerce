@@ -42,6 +42,7 @@ Route::middleware([
     
     //Routes for news Categories
     Route::resource('categories', NewsCategoryController::class);
+    Route::post('categories/bulk-delete', [NewsCategoryController::class, 'bulkCatDelete'])->name('categories.bulk-delete');
     
     
 

@@ -91,8 +91,24 @@ class NewsCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(NewsCategory $category)
     {
-        //
+        if ($category) {
+            $category->delete();
+            return response()->json(['status'=> 'success','message'=> 'Category Deleted Successfully', 'category'=>$category],200);
+        }
+        return response()->json(['status'=> 'failed','message'=> 'Unable to Delete!'],200);
+    }
+
+    public function bulkCatDelete(Request $request) {
+        if ($request->categoryIds) {
+            $response = NewsCategory::whereIn('id', $request->categoryIds)->delete();
+
+            if ($response) {
+                return response()->json(['status' => 'success', 'message' => 'Category deleted successfully']);
+            }
+            return response()->json(['status' => 'failed', 'message' => 'Unable to delete Categories!']);
+        }
+        return response()->json(['status' => 'failed', 'message' => 'No Category found!']);
     }
 }

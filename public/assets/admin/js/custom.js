@@ -397,7 +397,7 @@ $(document).ready(function () {
                                 categoryRow.find('td:nth-child(4)').text(category.category_desc);
                             } else {
                                 categoryTable.row.add([
-                                    `<input type="checkbox" name="checkAllCats" class="form-check-input cat-checkbox" value="${categoryId}">`,
+                                    `<input type="checkbox" name="checkAllCats" id="checkAllCats_${categoryId}" class="form-check-input category-checkbox" value="${categoryId}">`,
                                     categoryId,
                                     category.category_name,
                                     category.category_desc,
@@ -408,7 +408,6 @@ $(document).ready(function () {
                                     </td>`
                                 ]).draw(false);
                             }
-                            
                         }
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
@@ -464,12 +463,141 @@ $(document).ready(function () {
         }
     }
 
-    //Edit News Category
     $("#categoryTable").on("click", ".btnCatEdit", function() {
         const catId = $(this).data("id");
         const mode = "edit";
         catId && fetchCategory(catId, mode);
     });
-  
+
+    //Delete Todo
+    $("#categoryTable").on("click", ".btnCatDelete", function () {
+        const catId = $(this).data("id");
+        const buttonObj = $(this);
+    
+        if (catId) {
+    
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Delete",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `categories/${catId}`,
+                        type: "DELETE",
+                        success: function (response) {
+                            if (response.status === "success") {
+                                if (response.category) {
+                                    const rowIndex = categoryTable.row($(`#category_${response.category.id}`)).index();
+                                    categoryTable.row(rowIndex).remove().draw();
+    
+                                    Swal.fire({
+                                        title: "Deleted!",
+                                        text: "News Category has been deleted.",
+                                        icon: "success",
+                                        timer: 1500,
+                                    });
+                                }
+                            } else {
+                                Swal.fire({
+                                    title: "Failed!",
+                                    text: "Unable to delete Category!",
+                                    icon: "error",
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                title: "Failed!",
+                                text: "Unable to delete Category!",
+                                icon: "error",
+                            });
+                        },
+                    });
+                }
+            });
+        }
+    });
+    
+    //Bulk select
+    $("#selectAllCats").on("click", function(){
+        const checkboxes = $("#categoryTable tbody input[type='checkbox']");
+        checkboxes.prop("checked", $(this).prop("checked"));
+
+        if ($(this).prop("checked")) {
+            $("#bulkCatDelete").removeClass("d-none");
+        }
+        else{
+            $("#bulkCatDelete").addClass("d-none");
+        }
+    });
+
+    //Bulk Deleted
+$("#bulkCatDelete").on("click", function() {
+    let selectedCats = [];
+
+    $(".category-checkbox:checked").each(function() {
+        selectedCats.push($(this).val());
+    });
+
+    // Show SweetAlert confirmation dialog
+    Swal.fire({
+        title: "Are you sure?",
+        text: "This action will delete selected categories. Continue?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If user confirms, proceed with bulk delete action
+            $.ajax({
+                url: "categories/bulk-delete",
+                type: "POST",
+                data: {
+                    categoryIds: selectedCats
+                },
+                success: function(response) {
+                    if (response.status === "success") {
+
+                        $(".category-checkbox:checked").each(function() {
+                            categoryTable.row($(this).parents('tr')).remove().draw();
+                        });
+
+                        Swal.fire({
+                            title: "Success!",
+                            text: response.message,
+                            icon: "success",
+                            timer: 1500,
+                        });
+
+                        $("#bulkCatDelete").addClass("d-none");
+                    } else {
+                        Swal.fire({
+                            title: "Failed!",
+                            text: response.message,
+                            icon: "error",
+                            timer: 1500,
+                        });
+                    }
+                },
+                error: function(error) {
+                    Swal.fire({
+                        title: "Failed!",
+                        text: "Unable to delete categories.",
+                        icon: "error",
+                        timer: 1500,
+                    });
+                }
+            });
+        }
+    });
+});
+
    
 });

@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-4">
-
+                        <a href="javascript:void(0)" id="bulkCatDelete" class="btn btn-danger d-none">Bulk Delete!</a>
                     </div>
                     <div class="col-sm-4 text-center">
                         <h3>To do List</h3>
@@ -20,7 +20,7 @@
                         <thead>
                             <tr>
                                 <th data-orderable="false" class="no-sort">
-                                    <input type="checkbox" name="selectAllCats" id="selectAllCats" class="form-check-input">
+                                    <input type="checkbox" name="selectAllCats" id="selectAllCats" class="form-check-input category-checkbox">
                                 </th>
                                 <th>{{__("ID")}}</th>
                                 <th>{{__("Title")}}</th>
@@ -32,7 +32,7 @@
                             @foreach($allCategories as $category)
                             <tr id="{{'category_'.$category->id}}">
                                 <td>
-                                    <input type="checkbox" name="checkAllCats" id="chaeckAllCat" class="form-check-input cat-checkbox" value="">
+                                    <input type="checkbox" name="checkAllCats" id="checkAllCats" class="form-check-input category-checkbox" value="{{$category->id}}">
                                 </td>
                                 <td>{{$category->id}}</td>
                                 <td>{{$category->category_name}}</td>
