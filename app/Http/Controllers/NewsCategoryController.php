@@ -78,15 +78,16 @@ class NewsCategoryController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, NewsCategory $category)
-    {
-        if($category){
-            $category['category_name'] = $request->category_name;
-            $category['category_desc'] = $request->category_desc;
-            $category->save();
-            return response()->json(['status'=>'success','message'=> 'Category Updated successfully', 'category'=>$category],200);
-        }
-        return response()->json(['status'=>'failed','message'=> 'Unable to Update Category'],200);
+{
+    if($category){
+        $category->category_name = $request->category_name;
+        $category->category_desc = $request->category_desc;
+        $category->save();
+        return response()->json(['status'=>'success','message'=> 'Category Updated successfully', 'category'=>$category],200);
     }
+    return response()->json(['status'=>'failed','message'=> 'Unable to Update Category'],200);
+}
+
 
     /**
      * Remove the specified resource from storage.

@@ -39,6 +39,11 @@
 <body>
     <div class="layer"></div>
     <!-- ! Body -->
+        <div id="loader" class="LoadingOverlay d-none">
+            <div class="Line-Progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
     <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
     <div class="page-flex">
         <!-- ! Sidebar -->

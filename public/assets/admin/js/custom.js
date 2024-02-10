@@ -5,6 +5,16 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+
+    function showLoader() {
+        $('#loader').removeClass('d-none');
+    }
+    
+    function hideLoader() {
+        $('#loader').addClass('d-none');
+    }
+    
+
     const dataTable = $("#todoTable").DataTable({
         
     });
@@ -56,7 +66,8 @@ $(document).ready(function () {
               type: methodType,
               data: formData,
               beforeSend: function () {
-                  console.log('loading....');
+                  //console.log('loading....');
+                  showLoader();
               },
               success: function (response) {
                 
@@ -97,6 +108,9 @@ $(document).ready(function () {
             
               error: function (error) {
                   toastr.error(`An error occurred: ${error.statusText}`);
+              },
+              complete: function() {
+                hideLoader();
               }
 
           });
@@ -111,6 +125,7 @@ $(document).ready(function () {
     });
 
     function fetchTodo(todoId, mode=null) {
+        showLoader();
         if (todoId) {
             $.ajax({
                 url: `todos/${todoId}`,
@@ -140,6 +155,9 @@ $(document).ready(function () {
                 },
                 error: function(error){
                     console.error(error);
+                },
+                complete:function(){
+                    hideLoader();
                 }
             });
         }
@@ -379,7 +397,8 @@ $(document).ready(function () {
                 type: methodType,
                 data: catData,
                 beforeSend: function () {
-                    console.log('loading....');
+                    //console.log('loading....');
+                    showLoader();
                 },
                 success: function(response) {
                     $("#categoryForm")[0].reset();
@@ -416,6 +435,9 @@ $(document).ready(function () {
                 
                 error: function (error) {
                     toastr.error(`An error occurred: ${error.statusText}`);
+                },
+                complete:function(){
+                    hideLoader();
                 }
             });
         }
@@ -429,6 +451,7 @@ $(document).ready(function () {
         catId && fetchCategory(catId, mode);
     });
     function fetchCategory(catId, mode=null) { 
+        showLoader();
         if (catId) {
             $.ajax({
                 url: `categories/${catId}`,
@@ -458,6 +481,9 @@ $(document).ready(function () {
                 },
                 error: function(error){
                     console.error(error);
+                },
+                complete:function(){
+                    hideLoader();
                 }
             });
         }
