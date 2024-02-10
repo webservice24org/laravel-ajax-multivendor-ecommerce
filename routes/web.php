@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
@@ -40,10 +41,11 @@ Route::middleware([
     Route::post('todos/mark-completed', [TodoController::class,'markCompleted'])->name('todos.mark-completed');
     Route::post('todos/bulk-delete', [TodoController::class, 'bulkDelete'])->name('todos.bulk-delete');
     
-    //Routes for news Categories
     Route::resource('categories', NewsCategoryController::class);
     Route::post('categories/bulk-delete', [NewsCategoryController::class, 'bulkCatDelete'])->name('categories.bulk-delete');
     
+    Route::resource('brands', BrandController::class);
+    Route::post('brands/bulk-delete', [BrandController::class, 'bulkBrandDelete'])->name('brands.bulk-delete');
     
 
 });    

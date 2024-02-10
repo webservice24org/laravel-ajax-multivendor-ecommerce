@@ -16,7 +16,7 @@ class NewsCategoryController extends Controller
     public function index():View
     {
         $allCategories = NewsCategory::all();
-        return view("pages.news.categories", compact("allCategories"));
+        return view("pages.categories", compact("allCategories"));
     }
 
     /**

@@ -7,7 +7,7 @@
                         <a href="javascript:void(0)" id="bulkCatDelete" class="btn btn-danger d-none">Bulk Delete!</a>
                     </div>
                     <div class="col-sm-4 text-center">
-                        <h3>To do List</h3>
+                        <h3>News categories</h3>
                     </div>
                     <div class="col-sm-4 text-end">
                         <a href="javascript:void(0)" id="categoryCreate" class="btn btn-primary">Create Category</a>
