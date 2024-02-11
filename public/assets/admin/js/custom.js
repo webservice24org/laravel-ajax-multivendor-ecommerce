@@ -651,7 +651,12 @@ $(document).ready(function () {
             },
             submitHandler: function (form) {
                 $("#response").empty();
-                const brandData = $(form).serializeArray();
+                //const brandData = $(form).serializeArray();
+
+                // const brandId = $("#hidden-brand-id").val();
+                // const methodType = brandId ? "PUT" : "POST"; 
+                // const formAction = $(form).attr("action");
+                const brandData = new FormData(form); 
 
                 const brandId = $("#hidden-brand-id").val();
                 const methodType = brandId ? "PUT" : "POST"; 
@@ -660,6 +665,8 @@ $(document).ready(function () {
                     url: formAction,
                     type: methodType,
                     data: brandData,
+                    processData: false, 
+                    contentType: false,
                     beforeSend: function () {
                         //console.log('loading....');
                         //showLoader();
@@ -685,13 +692,14 @@ $(document).ready(function () {
                                         `<input type="checkbox" name="checkAllBrands" id="checkAllBrands${brandId}" class="form-check-input brand-checkbox" value="${brandId}">`,
                                         brandId,
                                         brand.brand_name,
-                                        brand.brand_image,
+                                        `<img src="${brand.brand_image}" alt="Brand Image" style="max-width: 100px; max-height: 100px;">`, // Display the brand image here
                                         `<td>
                                             <a href="javascript:void(0)" class="btn btn-primary btn-sm btnBrandView" data-id="${brandId}">View</a>
                                             <a href="javascript:void(0)" class="btn btn-success btn-sm btnBrandEdit" data-id="${brandId}">Edit</a>
                                             <a href="javascript:void(0)" class="btn btn-danger btn-sm btnBrandDelete" data-id="${brandId}">Delete</a>
                                         </td>`
                                     ]).draw(false);
+                                    
                                 }
                             }
                         } else if (response.status === 'failed') {

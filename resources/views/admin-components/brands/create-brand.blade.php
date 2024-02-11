@@ -10,12 +10,12 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="title">{{__('Brand Title')}}</label>
+                <label for="brand_name">{{__('Brand Title')}}</label>
                 <input type="text" id="brand_name" name="brand_name" class="form-control">
             </div>
             <div class="form-group py-2">
                 <label for="brand_image">{{__('Brand Image')}}</label>
-                <textarea class="form-control" name="brand_image" id="brand_image" rows="3"></textarea>
+                <input type="file" class="form-control" name="brand_image" id="brand_image">
                     
             </div>
         </div>

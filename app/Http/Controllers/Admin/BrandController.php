@@ -33,13 +33,30 @@ class BrandController extends Controller
         $this->validate($request, [
             "brand_name"=> "required|min:2"
         ]);
+        
+        // Handle image upload
+        if ($request->hasFile('brand_image')) {
+            $image = $request->file('brand_image');
+            
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+
+            $image->move(public_path('assets/admin/img/brands'), $imageName);
+            
+            $imagePath = 'assets/admin/img/brands/'.$imageName;
+        } else {
+            $imagePath = 'assets/admin/img/brands/default.png'; 
+        }
+        
         $brand = Brand::create([
-            "brand_name"=> $request->brand_name
+            "brand_name"=> $request->brand_name,
+            "brand_image" => $imagePath
         ]);
+        
         if ($brand) {
             return response()->json(['status'=>'success','message'=> 'Brand created successfully', 'brand'=>$brand],200);
         }
         return response()->json(['status'=>'failed','message'=> 'Unable to create Brand'],200);
+        
     }
 
     /**
