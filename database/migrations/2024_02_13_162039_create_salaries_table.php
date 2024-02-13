@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->string('brand_name');
-            $table->string('brand_image')->nullable();
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 10, 2);
+            $table->date('payment_date');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('salaries');
     }
 };

@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Brand extends Model
+class Role extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        "brand_name", "brand_image"
+        'name', 'label'
     ];
-    public function vendors() {
-        return $this->hasMany(Vendor::class);
+    public function users() {
+        return $this->belongsToMany(User::class, 'user_roles');
     }
+    
     
 }

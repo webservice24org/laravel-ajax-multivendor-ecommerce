@@ -50,3 +50,16 @@ Route::middleware([
 
 });    
 
+
+
+// Route::group(['middleware' => ['auth', 'admin']], function () {
+// });
+
+// Route::group(['middleware' => ['auth', 'vendor']], function () {
+// });
+
+
+// Route::group(['middleware' => ['auth', 'customer']], function () {
+
+// });
+
