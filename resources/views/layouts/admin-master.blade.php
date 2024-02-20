@@ -62,8 +62,8 @@
             <footer class="footer">
                 <div class="container footer--flex">
                     <div class="footer-start">
-                        <p>2021 © Elegant Dashboard - <a href="elegant-dashboard.com" target="_blank"
-                                rel="noopener noreferrer">elegant-dashboard.com</a></p>
+                        <p>Developed by <a href="elegant-dashboard.com" target="_blank"
+                                rel="noopener noreferrer">MicroWeb Technology</a></p>
                     </div>
                     <ul class="footer-end">
                         <li><a href="##">About</a></li>
@@ -87,6 +87,7 @@
         const baseUrl = "{{url('/')}}";
     </script>
     <script src="{{asset('assets/admin/js/custom.js')}}"></script>
+    <script src="{{asset('assets/admin/js/product.js')}}"></script>
     <script src="{{asset('assets/admin/plugins/chart.min.js')}}"></script>
 
     <script src="{{asset('assets/admin/plugins/feather.min.js')}}"></script>

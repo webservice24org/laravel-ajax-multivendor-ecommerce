@@ -61,7 +61,7 @@
                             <a href="{{url('/brands')}}">Brands</a>
                         </li>
                         <li>
-                            <a href="media-02.html">Product Categories</a>
+                            <a href="{{url('/product-categories')}}">Product Categories</a>
                         </li>
                     </ul>
                 </li>

@@ -31,7 +31,7 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "brand_name"=> "required|min:2"
+            "brand_name"=> "required|min:2|unique:brands"
         ]);
         
         // Handle image upload

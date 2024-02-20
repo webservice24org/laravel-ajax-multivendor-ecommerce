@@ -479,8 +479,8 @@ $(document).ready(function () {
                         $("#CreateNewsCats").modal("toggle");
                     }
                 },
-                error: function(error){
-                    console.error(error);
+                error: function (error) {
+                    toastr.error(`An error occurred: ${error.statusText}`);
                 },
                 complete:function(){
                     //hideLoader();
@@ -854,7 +854,6 @@ $(document).ready(function () {
                 confirmButtonText: "Yes, delete!",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If user confirms, proceed with bulk delete action
                     $.ajax({
                         url: "brands/bulk-delete",
                         type: "POST",
