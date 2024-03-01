@@ -18,6 +18,10 @@
                 <input type="file" class="form-control" name="brand_image" id="brand_image">
                     
             </div>
+
+            <div class="form-group py-2">
+              <div id="brand_image_preview"></div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

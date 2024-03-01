@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Exception;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\ProductCategory;
@@ -90,46 +91,52 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductCategory $productCategory)
-{
-    try {
-        $this->validate($request, [
-            "product_category_name" => "required|min:3|unique:product_categories,product_category_name," . $productCategory->id,
-            //"category_image" => "image|mimes:jpeg,png,jpg,gif|max:2048"
-        ]);
-    
-        // Handle file upload
-        if ($request->hasFile('category_image')) {
-            // Delete previous image if exists
-            if ($productCategory->category_image && file_exists(public_path($productCategory->category_image))) {
-                unlink(public_path($productCategory->category_image));
-            }
-            $image = $request->file('category_image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/admin/img/categories'), $imageName);
-            $imagePath = 'assets/admin/img/categories/' . $imageName;
-        } else {
-            $imagePath = $productCategory->category_image; // Keep existing image path
-        }
-    
-        $data = [
-            "product_category_name" => $request->product_category_name,
-            "category_image" => $imagePath,
-            "category_desc" => $request->category_desc
-        ];
 
-        // Check if new slug is provided
-        if ($request->filled('product_category_slug')) {
-            $data["product_category_slug"] = Str::slug($request->product_category_slug, '-');
+
+    public function update(Request $request, ProductCategory $productCategory)
+    {
+        try {
+            $this->validate($request, [
+                "product_category_name" => "required|min:3"
+            ]);
+    
+            // Handle file upload
+            if ($request->hasFile('category_image')) {
+                // Delete previous image if exists
+                if ($productCategory->category_image && file_exists(public_path($productCategory->category_image))) {
+                    unlink(public_path($productCategory->category_image));
+                }
+                $image = $request->file('category_image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('assets/admin/img/categories'), $imageName);
+                $imagePath = 'assets/admin/img/categories/' . $imageName;
+            } else {
+                $imagePath = $productCategory->category_image; // Keep existing image path
+            }
+    
+            $data = [
+                "product_category_name" => $request->product_category_name,
+                "category_image" => $imagePath,
+                "category_desc" => $request->category_desc
+            ];
+    
+            // Check if new slug is provided
+            if ($request->filled('product_category_slug')) {
+                $data["product_category_slug"] = Str::slug($request->product_category_slug, '-');
+            }
+    
+            $productCategory->update($data);
+    
+            return response()->json(['status' => 'success', 'message' => 'Category updated successfully', 'productCategory' => $productCategory], 200);
+        } catch (ValidationException $ex) {
+            // Validation failed
+            return response()->json(['status' => 'failed', 'errors' => $ex->errors()], 422);
+        } catch (Exception $ex) {
+            // Other exceptions
+            return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
         }
-    
-        $productCategory->update($data);
-    
-        return response()->json(['status' => 'success', 'message' => 'Category updated successfully', 'productCategory' => $productCategory], 200);
-    } catch (Exception $ex) {
-        return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 200);
     }
-}
+    
 
 
 

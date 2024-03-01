@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class BrandController extends Controller
 {
@@ -84,15 +86,34 @@ class BrandController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Brand $brand)
-    {
-        if($brand){
-            $brand['brand_name'] = $request->brand_name;
-            $brand['brand_image'] = $request->brand_image;
-            $brand->save();
-            return response()->json(['status'=>'success','message'=> 'Brand Updated success', 'brand'=>$brand],200);
-        }
-        return response()->json(['status'=>'failed','message'=> 'Unable to Update brand'],200);
+{
+    if (!$brand) {
+        return response()->json(['status' => 'failed', 'message' => 'Brand not found'], 404);
     }
+
+    $request->validate([
+        'brand_name' => 'required|min:2',
+        'brand_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation rules for brand image upload
+    ]);
+
+    $brand->brand_name = $request->brand_name;
+
+    if ($request->hasFile('brand_image')) {
+        $image = $request->file('brand_image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('assets/admin/img/brands'), $imageName);
+        $brand->brand_image = 'assets/admin/img/brands/' . $imageName;
+    }
+
+    try {
+        $brand->save();
+        return response()->json(['status' => 'success', 'message' => 'Brand updated successfully', 'brand' => $brand], 200);
+    } catch (Exception $e) {
+        return response()->json(['status' => 'error', 'message' => 'Unable to update brand: ' . $e->getMessage()], 500);
+    }
+}
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\TodoController;
@@ -50,6 +51,9 @@ Route::middleware([
     
     Route::resource('product-categories', ProductCategoryController::class);
     Route::post('product-categories/bulk-delete', [ProductCategoryController::class, 'bulkpCatDelete'])->name('pcat.bulk-delete');
+   
+    Route::resource('departments', DepartmentController::class);
+    Route::post('departments/bulk-delete', [DepartmentController::class, 'bulkDepDelete'])->name('dep.bulk-delete');
     
 
 });    

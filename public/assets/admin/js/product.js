@@ -33,7 +33,7 @@ $(document).ready(function () {
           }
       },
       messages: {
-        title: {
+        product_category_name: {
             required: "Please enter Category Name",
             minlength: jQuery.validator.format("At least {0} characters required!")
         }
