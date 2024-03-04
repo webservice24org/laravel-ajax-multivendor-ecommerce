@@ -91,6 +91,7 @@
     <script src="{{asset('assets/admin/js/brand.js')}}"></script>
     <script src="{{asset('assets/admin/js/departments.js')}}"></script>
     <script src="{{asset('assets/admin/js/students.js')}}"></script>
+    <script src="{{asset('assets/admin/js/teachers.js')}}"></script>
     <script src="{{asset('assets/admin/plugins/chart.min.js')}}"></script>
 
     <script src="{{asset('assets/admin/plugins/feather.min.js')}}"></script>

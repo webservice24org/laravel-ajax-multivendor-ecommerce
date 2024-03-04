@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +59,8 @@ Route::middleware([
 
     Route::resource('students', StudentController::class);
     Route::get('/students/{id}/edit', [StudentController::class, 'edit']);
+
+    Route::resource('teachers', TeacherController::class);
 
 
     
