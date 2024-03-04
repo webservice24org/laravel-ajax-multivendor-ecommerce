@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,11 @@ Route::middleware([
    
     Route::resource('departments', DepartmentController::class);
     Route::post('departments/bulk-delete', [DepartmentController::class, 'bulkDepDelete'])->name('dep.bulk-delete');
+
+    Route::resource('students', StudentController::class);
+    Route::get('/students/{id}/edit', [StudentController::class, 'edit']);
+
+
     
 
 });    
