@@ -33,11 +33,17 @@
                                 <td>{{$teacher->email}}</td>
                                 <td>{{$teacher->phone}}</td>
                                 <td>
-                                    <img src="{{$teacher->photo}}" alt="{{$teacher->name}}" style="max-width: 100px; max-height: 100px;">
+                                    @if($teacher->photo)
+                                        <img src="{{ asset('assets/admin/img/teacher/' . $teacher->photo) }}" alt="{{ $teacher->name }}" style="max-width: 100px; max-height: 100px;">
+                                    @else
+                                        <img src="{{ asset('assets/admin/img/teacher/default.png') }}" alt="Default Image" style="max-width: 100px; max-height: 100px;">
+                                    @endif
                                 </td>
+
+
                                 <td>
-                                    <a href="javascript:void(0)" class="btn btn-success editStudent" data-id="{{$teacher->id}}">Edit</a>
-                                    <a href="javascript:void(0)" class="btn btn-danger deleteStudent" data-id="{{$teacher->id}}">Delete</a>
+                                    <a href="javascript:void(0)" class="btn btn-success editTeacher" data-id="{{$teacher->id}}">Edit</a>
+                                    <a href="javascript:void(0)" class="btn btn-danger deleteTeacher" data-id="{{$teacher->id}}">Delete</a>
                                 </td>
                             </tr>
                             @endforeach

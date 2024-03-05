@@ -64,7 +64,7 @@ $(document).ready(function () {
                                         `<input type="checkbox" name="checkAllBrands" id="checkAllBrands${brandId}" class="form-check-input brand-checkbox" value="${brandId}">`,
                                         brandId,
                                         brand.brand_name,
-                                        `<img src="${brand.brand_image}" alt="Brand Image" style="max-width: 100px; max-height: 100px;">`, // Display the brand image here
+                                        `<img src="${brand.brand_image}" alt="Brand Image" style="max-width: 100px; max-height: 100px;">`, 
                                         `<td>
                                             <a href="javascript:void(0)" class="btn btn-primary btn-sm btnBrandView" data-id="${brandId}">View</a>
                                             <a href="javascript:void(0)" class="btn btn-success btn-sm btnBrandEdit" data-id="${brandId}">Edit</a>

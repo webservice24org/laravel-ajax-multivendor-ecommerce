@@ -41,11 +41,8 @@ class TeacherController extends Controller
                 $image->move(public_path('assets/admin/img/teacher/'), $imageName);
                 $teacher->photo = $imageName;
             } else {
-                // Default image if no file uploaded
-                $teacher->photo = 'assets/admin/img/teacher/default.png';
+                $teacher->photo = 'default.png';
             }
-
-            // Save other form data
             $teacher->name = $request->name;
             $teacher->email = $request->email;
             $teacher->phone = $request->phone;
@@ -69,18 +66,58 @@ class TeacherController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        try {
+            $teacher = Teacher::findOrFail($id);
+            return response()->json(['status' => 'success', 'teacher' => $teacher], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $id)
+{
+    try {
+        // Validate input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
+        ]);
+
+        $teacher = Teacher::findOrFail($id);
+        // Handle photo upload if provided
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/admin/img/teacher'), $imageName);
+            $teacher->photo = $imageName;
+            //$teacher->save();  Save changes with photo
+        }
+        // Update teacher's information
+        $teacher->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'photo' => $imageName,
+        ]);
+
+        
+
+        return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
+    } catch (Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
     }
+}
+
+
+
 
     /**
      * Remove the specified resource from storage.
