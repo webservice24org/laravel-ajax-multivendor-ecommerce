@@ -42,18 +42,18 @@ Route::middleware([
 
     //Routes for todo lists
     Route::resource('todos', TodoController::class);
-    Route::post('todos/mark-completed', [TodoController::class,'markCompleted'])->name('todos.mark-completed');
+    Route::post('todos/mark-completed', [TodoController::class, 'markCompleted'])->name('todos.mark-completed');
     Route::post('todos/bulk-delete', [TodoController::class, 'bulkDelete'])->name('todos.bulk-delete');
-    
+
     Route::resource('categories', NewsCategoryController::class);
     Route::post('categories/bulk-delete', [NewsCategoryController::class, 'bulkCatDelete'])->name('categories.bulk-delete');
-    
+
     Route::resource('brands', BrandController::class);
     Route::post('brands/bulk-delete', [BrandController::class, 'bulkBrandDelete'])->name('brands.bulk-delete');
-    
+
     Route::resource('product-categories', ProductCategoryController::class);
     Route::post('product-categories/bulk-delete', [ProductCategoryController::class, 'bulkpCatDelete'])->name('pcat.bulk-delete');
-   
+
     Route::resource('departments', DepartmentController::class);
     Route::post('departments/bulk-delete', [DepartmentController::class, 'bulkDepDelete'])->name('dep.bulk-delete');
 
@@ -62,10 +62,11 @@ Route::middleware([
 
     Route::resource('teachers', TeacherController::class);
 
+    Route::post('teacher/update/{id}', [TeacherController::class, 'update'])->name('teacher.update');
 
-    
 
-});    
+
+});
 
 
 
