@@ -1,10 +1,4 @@
 $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
     const teacherTable = $("#teacherTable").DataTable({});
     $("#addNewTeacher").on('click', function () {
         $("#teacherModal").modal('toggle');
@@ -122,7 +116,11 @@ $(document).ready(function () {
         });
     });
 
+<<<<<<< HEAD
     $('#photo').change(function () {
+=======
+    $('#teacherEditModal #photo').change(function () {
+>>>>>>> 2cece7ed2a806f1a5dab2b16d36b2d4bcd74c46d
         let reader = new FileReader();
         reader.onload = (e) => {
             $('#teacherPhoto').attr('src', e.target.result);
@@ -163,9 +161,17 @@ $(document).ready(function () {
         submitHandler: function (form) {
             var formData = new FormData(form);
             var teacherId = $('#teacherId').val();
+<<<<<<< HEAD
             // Check if photo field is empty
             if ($('#photo')[0].files.length > 0) {
                 formData.append('photo', $('#photo')[0].files[0]); // Append the file input field
+=======
+            var currentPhoto = $('#teacherPhoto').attr('src'); // Get the current photo URL
+            if ($('#photo')[0].files[0]) {
+                formData.append('photo', $('#photo')[0].files[0]);
+            } else {
+                formData.append('current_photo', currentPhoto);
+>>>>>>> 2cece7ed2a806f1a5dab2b16d36b2d4bcd74c46d
             }
             $.ajax({
                 type: "POST",
@@ -184,7 +190,7 @@ $(document).ready(function () {
                             response.teacher.name,
                             response.teacher.email,
                             response.teacher.phone,
-                            `<img src="/assets/admin/img/teacher/${response.teacher.photo}" alt="${response.teacher.name}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
+                            `<img src="/assets/admin/img/teacher/${response.teacher.photo}" alt="${response.teacher.name}" class="img-thumbnail" style="width: 100px; height: 100px;">`,
                             `<a href="javascript:void(0)" class="btn btn-success editTeacher" data-id="${response.teacher.id}">Edit</a>
                                     <a href="javascript:void(0)" class="btn btn-danger deleteTeacher" data-id="${response.teacher.id}">Delete</a>`
                         ];
@@ -203,8 +209,49 @@ $(document).ready(function () {
                 }
             });
         }
+
+    });
+
+    //delete
+
+    $("#teacherTable").on("click", ".deleteTeacher", function () {
+        var teacherId = $(this).data("id");
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `/teachers/${teacherId}`,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+                            location.reload();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            toastr.error(xhr.responseJSON.message);
+                        } else {
+                            toastr.error('An error occurred while processing your request.');
+                        }
+                    }
+                });
+            }
+        });
     });
     
+
 
 
 

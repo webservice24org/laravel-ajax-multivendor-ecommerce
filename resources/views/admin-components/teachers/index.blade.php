@@ -27,7 +27,7 @@
                         </thead>
                         <tbody>
                             @foreach($teachers as $teacher)
-                            <tr id="{{'teacher_'.$teacher->id}}">
+                            <tr id="{{'teacher_' . $teacher->id}}">
                                 <td>{{$teacher->id}}</td>
                                 <td>{{$teacher->name}}</td>
                                 <td>{{$teacher->email}}</td>
