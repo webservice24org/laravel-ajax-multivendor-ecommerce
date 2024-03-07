@@ -6,7 +6,7 @@
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Teacher</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="" method="POST" id="updateTeacherForm" enctype="multipart/form-data">
+      <form action="{{route('teachers.update',2)}}" method="PUT" id="updateTeacherForm" enctype="multipart/form-data">
         @csrf
         <div class="modal-body">
             <div class="form-group">
