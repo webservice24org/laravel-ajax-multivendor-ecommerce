@@ -90,6 +90,7 @@ $(document).ready(function () {
     // Edit Teacher
     $("#teacherTable").on("click", ".editTeacher", function () {
         var teacherId = $(this).data("id");
+
         $.ajax({
             type: "GET",
             url: `/teachers/${teacherId}/edit`,
@@ -100,6 +101,7 @@ $(document).ready(function () {
                     $("#teacherEditModal #name").val(response.teacher.name);
                     $("#teacherEditModal #email").val(response.teacher.email);
                     $("#teacherEditModal #phone").val(response.teacher.phone);
+                    
                     if (response.teacher.photo) {
                         var photoUrl = `/assets/admin/img/teacher/${response.teacher.photo}`;
                         $("#teacherEditModal #teacherPhoto").attr("src", photoUrl);
@@ -120,7 +122,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#edit_photo').change(function () {
+    $('#photo').change(function () {
         let reader = new FileReader();
         reader.onload = (e) => {
             $('#teacherPhoto').attr('src', e.target.result);
@@ -161,7 +163,10 @@ $(document).ready(function () {
         submitHandler: function (form) {
             var formData = new FormData(form);
             var teacherId = $('#teacherId').val();
-            formData.append('photo', $('#photo')[0].files[0]); // Append the file input field
+            // Check if photo field is empty
+            if ($('#photo')[0].files.length > 0) {
+                formData.append('photo', $('#photo')[0].files[0]); // Append the file input field
+            }
             $.ajax({
                 type: "POST",
                 url: `/teacher/update/${teacherId}`,
@@ -199,6 +204,7 @@ $(document).ready(function () {
             });
         }
     });
+    
 
 
 

@@ -80,74 +80,75 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-<<<<<<< HEAD
+    /**
+ * Update the specified resource in storage.
+ */
+// public function update(Request $request, $id)
+// {
+//     try {
+//         // Validate input data
+//         $request->validate([
+//             'name' => 'required|string|max:255',
+//             'email' => 'required|email|max:255',
+//             'phone' => 'required|string|max:20',
+//             'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+//         ]);
+
+//         $teacher = Teacher::findOrFail($id);
+//         if ($request->hasFile('photo')) {
+//             $image = $request->file('photo');
+//             $imageName = time() . '.' . $image->getClientOriginalExtension();
+//             $image->move(public_path('assets/admin/img/teacher'), $imageName);
+//             $teacher->photo = $imageName;
+//         }
+//         $teacher->update([
+//             'name' => $request->name,
+//             'email' => $request->email,
+//             'phone' => $request->phone,
+//             'photo' => $imageName ?? null, 
+//         ]);
+
+//         return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
+//     } catch (Exception $e) {
+//         return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+//     }
+// }
+
+public function update(Request $request, $id)
 {
-    dd($request->all());
     try {
         // Validate input data
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
-            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
         ]);
 
         $teacher = Teacher::findOrFail($id);
-
+        // Handle photo upload if provided
         if ($request->hasFile('photo')) {
             $image = $request->file('photo');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets/admin/img/teacher'), $imageName);
             $teacher->photo = $imageName;
-
+        } elseif ($request->has('current_photo')) {
+            // If no new photo is selected, but a current photo is provided, keep the current photo
+            $teacher->photo = basename($request->input('current_photo'));
         }
+        // Update teacher's information
         $teacher->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'photo' => $imageName,
         ]);
 
         return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
     } catch (Exception $e) {
         return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-=======
-    {
-        try {
-            // Validate input data
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
-                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
-            ]);
-
-            $teacher = Teacher::findOrFail($id);
-            // Handle photo upload if provided
-            if ($request->hasFile('photo')) {
-                $image = $request->file('photo');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('assets/admin/img/teacher'), $imageName);
-                $teacher->photo = $imageName;
-                //$teacher->save();  Save changes with photo
-            }
-            // Update teacher's information
-            $teacher->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'photo' => $imageName,
-            ]);
-
-
-
-            return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
-        } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-        }
->>>>>>> c7ab3a6a6a289ad913109951c6d55fb18566c9cc
     }
+}
+
 
 
 
