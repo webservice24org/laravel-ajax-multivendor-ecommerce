@@ -116,11 +116,7 @@ $(document).ready(function () {
         });
     });
 
-<<<<<<< HEAD
-    $('#photo').change(function () {
-=======
     $('#teacherEditModal #photo').change(function () {
->>>>>>> 2cece7ed2a806f1a5dab2b16d36b2d4bcd74c46d
         let reader = new FileReader();
         reader.onload = (e) => {
             $('#teacherPhoto').attr('src', e.target.result);
@@ -161,17 +157,11 @@ $(document).ready(function () {
         submitHandler: function (form) {
             var formData = new FormData(form);
             var teacherId = $('#teacherId').val();
-<<<<<<< HEAD
-            // Check if photo field is empty
-            if ($('#photo')[0].files.length > 0) {
-                formData.append('photo', $('#photo')[0].files[0]); // Append the file input field
-=======
             var currentPhoto = $('#teacherPhoto').attr('src'); // Get the current photo URL
             if ($('#photo')[0].files[0]) {
                 formData.append('photo', $('#photo')[0].files[0]);
             } else {
                 formData.append('current_photo', currentPhoto);
->>>>>>> 2cece7ed2a806f1a5dab2b16d36b2d4bcd74c46d
             }
             $.ajax({
                 type: "POST",
@@ -216,7 +206,7 @@ $(document).ready(function () {
 
     $("#teacherTable").on("click", ".deleteTeacher", function () {
         var teacherId = $(this).data("id");
-
+    
         Swal.fire({
             title: 'Are you sure?',
             text: 'You won\'t be able to revert this!',
@@ -233,8 +223,10 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if (response.status === 'success') {
+                            const rowIndex = teacherTable.row($(`#teacher_${teacherId}`)).index();
+                            teacherTable.row(rowIndex).remove().draw(false);
+                            
                             toastr.success(response.message);
-                            location.reload();
                         } else {
                             toastr.error(response.message);
                         }
@@ -250,6 +242,7 @@ $(document).ready(function () {
             }
         });
     });
+    
     
 
 
