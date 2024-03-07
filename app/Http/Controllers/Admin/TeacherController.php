@@ -81,73 +81,44 @@ class TeacherController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-<<<<<<< HEAD
-{
-    dd($request->all());
-    try {
-        // Validate input data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
-        ]);
-
-        $teacher = Teacher::findOrFail($id);
-
-        if ($request->hasFile('photo')) {
-            $image = $request->file('photo');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/admin/img/teacher'), $imageName);
-            $teacher->photo = $imageName;
-
-        }
-        $teacher->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'photo' => $imageName,
-        ]);
-
-        return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
-    } catch (Exception $e) {
-        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-=======
     {
         try {
-            // Validate input data
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'phone' => 'required|string|max:20',
-                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
+                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $teacher = Teacher::findOrFail($id);
-            // Handle photo upload if provided
             if ($request->hasFile('photo')) {
+                if ($teacher->photo && $teacher->photo != 'default.png') {
+                    $photoPath = public_path('assets/admin/img/teacher/' . $teacher->photo);
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
+                }
                 $image = $request->file('photo');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('assets/admin/img/teacher'), $imageName);
                 $teacher->photo = $imageName;
-                //$teacher->save();  Save changes with photo
+            } elseif ($request->has('current_photo')) {
+
+                $teacher->photo = basename($request->input('current_photo'));
             }
-            // Update teacher's information
             $teacher->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'photo' => $imageName,
             ]);
-
-
 
             return response()->json(['status' => 'success', 'message' => 'Teacher updated successfully.', 'teacher' => $teacher], 200);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
->>>>>>> c7ab3a6a6a289ad913109951c6d55fb18566c9cc
     }
+
+
 
 
 
@@ -155,8 +126,23 @@ class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $teacher = Teacher::findOrFail($id);
+            if ($teacher->photo && $teacher->photo != 'default.png') {
+                $photoPath = public_path('assets/admin/img/teacher/' . $teacher->photo);
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
+            }
+
+            $teacher->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Teacher deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
+
 }
